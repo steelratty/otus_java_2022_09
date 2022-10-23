@@ -9,7 +9,7 @@ import java.util.List;
 public class RunTests {
     public static void executeTest(String strTest) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
        // получить класс из строки, создать объект
-        Class<?> clazz = Class.forName("ru.otus.homework.TestClass");
+        Class<?> clazz = Class.forName(strTest);
         List<String> tests_success = new ArrayList<>();
         List<String> tests_fail = new ArrayList<>();
        //ищем все методы с аннотацией test
