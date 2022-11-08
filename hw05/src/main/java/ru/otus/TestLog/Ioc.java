@@ -6,35 +6,28 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.lang.reflect.Executable;
+import java.util.Map;
 
 class Ioc {
 
     private Ioc() {
     }
 
-    static TestLoggingInterface createMyClass() {
-        InvocationHandler handler = new DemoInvocationHandler(new TestLogging());
-        return (TestLoggingInterface) Proxy.newProxyInstance(Ioc.class.getClassLoader(),
-                new Class<?>[]{TestLoggingInterface.class}, handler);
+    static TestLoggingInterface createMyClass(Object cl, Class<?>[] iFace) {
+           InvocationHandler handler = new DemoInvocationHandler(cl);
+           return (TestLoggingInterface) Proxy.newProxyInstance(Ioc.class.getClassLoader(),
+                  iFace, handler);
     }
 
     static class DemoInvocationHandler implements InvocationHandler {
-        private final TestLoggingInterface myClass;
-        DemoInvocationHandler(TestLoggingInterface myClass) {
+        private final Object myClass;
+        private Map<Method, ArrayList<String>> metAnn = new HashMap<>();
+        DemoInvocationHandler(Object myClass) {
             this.myClass = myClass;
-        }
-
-        /* так как в текущем контексте нам доступны только методы и аннотации интерфейса, мы можем посмотреть
-        *  методы класса, сравнить их, при вызове с методами интерфейса и посмотреть аннотацию
-        *  недостаток - мы можем только к методам интерфейса обратиться, а не методам класса
-        *  и, наверное, нужно лучше arrayList из arrayList, но уже не хочется переписывать
-        */
-        HashMap<Method, ArrayList<String>> metAnn = new HashMap<>(){
+            // заполним список методов класса с аннотациями
             Class<?> clazz;
-            {
                 try {
-                    clazz = Class.forName(TestLogging.class.getName());
+                    clazz = Class.forName(this.myClass.getClass().getName());
                     Method[] methodsPublic = clazz.getMethods();
                     for (Method method: methodsPublic) {
                         Annotation[] annotations = method.getDeclaredAnnotations();
@@ -42,24 +35,11 @@ class Ioc {
                         for (Annotation annotation : annotations) {
                             strTemp.add(annotation.toString());
                         }
-                        if (!strTemp.isEmpty())   this.put(method,strTemp);
+                        if (!strTemp.isEmpty()) metAnn.put (method,strTemp);
                     }
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
-            }
-        };
-
-        // сравнение параметров методов
-        boolean equalParamTypes(Class<?>[] params1, Class<?>[] params2) {
-            if (params1.length == params2.length) {
-                for (int i = 0; i < params1.length; i++) {
-                    if (params1[i] != params2[i])
-                        return false;
-                }
-                return true;
-            }
-            return false;
         }
 
         @Override
@@ -88,6 +68,17 @@ class Ioc {
             return "DemoInvocationHandler{" +
                     "myClass=" + myClass +
                     '}';
+        }
+        // сравнение параметров методов
+        private boolean equalParamTypes(Class<?>[] params1, Class<?>[] params2) {
+            if (params1.length == params2.length) {
+                for (int i = 0; i < params1.length; i++) {
+                    if (params1[i] != params2[i])
+                        return false;
+                }
+                return true;
+            }
+            return false;
         }
     }
 }
