@@ -13,29 +13,36 @@ class Ioc {
     private Ioc() {
     }
 
-    static TestLoggingInterface createMyClass(Object cl, Class<?>[] iFace) {
-           InvocationHandler handler = new DemoInvocationHandler(cl);
+    static TestLoggingInterface createMyClass(Object cl) {
+        Class<?>[] iFaces = cl.getClass().getInterfaces();
+        InvocationHandler handler = new DemoInvocationHandler(cl, iFaces);
            return (TestLoggingInterface) Proxy.newProxyInstance(Ioc.class.getClassLoader(),
-                  iFace, handler);
+                  iFaces, handler);
     }
 
     static class DemoInvocationHandler implements InvocationHandler {
         private final Object myClass;
         private Map<Method, ArrayList<String>> metAnn = new HashMap<>();
-        DemoInvocationHandler(Object myClass) {
+        DemoInvocationHandler(Object myClass, Class<?>[] iFaces) {
             this.myClass = myClass;
-            // заполним список методов класса с аннотациями
+            // заполним список методов интерфесов класса с аннотациями класса
             Class<?> clazz;
                 try {
                     clazz = Class.forName(this.myClass.getClass().getName());
-                    Method[] methodsPublic = clazz.getMethods();
-                    for (Method method: methodsPublic) {
+                    Method[] methods = clazz.getMethods();
+                    for (Method method: methods) {
                         Annotation[] annotations = method.getDeclaredAnnotations();
                         ArrayList<String> strTemp = new ArrayList<>();
-                        for (Annotation annotation : annotations) {
-                            strTemp.add(annotation.toString());
+                        for (Class<?> iCl: iFaces) {
+                             for (Method iMet:iCl.getMethods()){
+                                 if (equalMethod(iMet,method)) {
+                                     for (Annotation annotation : annotations) {
+                                         strTemp.add(annotation.toString());
+                                     }
+                                     if (!strTemp.isEmpty()) metAnn.put (iMet,strTemp);
+                                 }
+                             }
                         }
-                        if (!strTemp.isEmpty()) metAnn.put (method,strTemp);
                     }
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
@@ -45,21 +52,14 @@ class Ioc {
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
-            for (Method met: metAnn.keySet()) {
-                 if (method.getName().equals(met.getName()) // имена совпадают
-                     && method.getReturnType() == met.getReturnType() // ретурн тоже
-                     &&  equalParamTypes(method.getParameterTypes(),met.getParameterTypes()) // наборы параметров тоже
-                 )
-                     if (metAnn.get(met).contains("@ru.otus.TestLog.Log()")) {
-                         String strParams = "";
-                         for (  Object arg :args ){
-                             strParams = strParams + " " +arg.toString();
-                         }
-                         System.out.printf("executed method: %s params:%s ",method,strParams);
-                         System.out.println();
-                     }
+            if (metAnn.get(method) != null && metAnn.get(method).contains("@ru.otus.TestLog.Log()")) {
+                String strParams = "";
+                for (  Object arg :args ){
+                    strParams = strParams + " " +arg.toString();
+                }
+                System.out.printf("executed method: %s params:%s ",method,strParams);
+                System.out.println();
             }
-
             return method.invoke(myClass, args);
         }
 
@@ -80,5 +80,12 @@ class Ioc {
             }
             return false;
         }
+        // сравнение методов
+        private boolean equalMethod(Method met1, Method met2) {
+            return met1.getName().equals(met2.getName()) // имена совпадают
+                    && met1.getReturnType() == met2.getReturnType() // ретурн тоже
+                    &&  equalParamTypes(met1.getParameterTypes(),met2.getParameterTypes()); // наборы параметров тоже
+        }
+
     }
 }

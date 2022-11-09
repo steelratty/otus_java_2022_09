@@ -14,6 +14,7 @@ allprojects {
         mavenCentral()
     }
 
+
     apply plugin: "io.spring.dependency-management"
     dependencyManagement {
         dependencies {
@@ -24,6 +25,7 @@ allprojects {
             }
             dependency "com.google.guava:guava:${Versions.guava}"
             dependency "org.ow2.asm:asm-commons:${Versions.asm}"
+
         }
     }
     configurations.all {
