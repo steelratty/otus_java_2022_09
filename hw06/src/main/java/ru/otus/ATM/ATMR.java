@@ -8,9 +8,10 @@ import java.util.TreeMap;
 public class ATMR implements ATM{
     private Map<Integer,CellATM> cells = new TreeMap<> (Collections.reverseOrder());
 
-    private ATMR(Builder builder){
-        cells.putAll(builder.cellsb);
+    private ATMR(Map<Integer,CellATMR> cellsb ){
+        cells.putAll(cellsb);
     };
+
     public static class Builder {
         private Map<Integer,CellATMR> cellsb = new TreeMap<> (Collections.reverseOrder());
         Builder addCell( int nominal, int maxN ){
@@ -18,7 +19,7 @@ public class ATMR implements ATM{
             return this;
         };
         ATMR build(){
-            return new ATMR(this);
+            return new ATMR(this.cellsb);
         }
 
     }
