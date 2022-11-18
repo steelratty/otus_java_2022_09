@@ -14,9 +14,9 @@ public class ATMtest {
     void myATMTest() {
         //given
        ATM myATM = new ATMR.Builder()
-               .addSell(1000,500)
-               .addSell(500,500)
-               .addSell(100, 500)
+               .addCell(1000,500)
+               .addCell(500,500)
+               .addCell(100, 500)
                .build();
        myATM.pushCash(1000,2);
        myATM.pushCash(500,8);

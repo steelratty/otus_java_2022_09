@@ -13,7 +13,7 @@ public class ATMR implements ATM{
     };
     public static class Builder {
         private Map<Integer,CellATMR> cellsb = new TreeMap<> (Collections.reverseOrder());
-        Builder addSell( int nominal, int maxN ){
+        Builder addCell( int nominal, int maxN ){
             cellsb.put( nominal, new CellATMR( nominal, maxN ) );
             return this;
         };
