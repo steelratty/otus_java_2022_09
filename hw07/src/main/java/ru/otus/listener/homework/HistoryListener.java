@@ -27,7 +27,8 @@ public class HistoryListener implements Listener, HistoryReader {
                 .field10(msg.getField10())
                 .field11(msg.getField11())
                 .field12(msg.getField12())
-                .field13(n).build()
+                .field13(n)
+                .build()
                ) ;
 
 
