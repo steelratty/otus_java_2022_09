@@ -22,9 +22,7 @@ public class FileSerializer implements Serializer {
 
     @Override
     public void serialize(Map<String, Double> data) throws JsonProcessingException {
-        //отсортировать подойдет тримап с настройками по умолчанию
-        var res = new TreeMap<String, Double>(data);
-        String json = new ObjectMapper().writeValueAsString(res);
+        String json = new ObjectMapper().writeValueAsString(data);
         try (var bufferedWriter = new BufferedWriter(new FileWriter(fileName))) {
             bufferedWriter.write(json);
         } catch (IOException e) {
