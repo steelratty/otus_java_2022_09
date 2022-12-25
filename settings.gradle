@@ -7,6 +7,9 @@ include 'hw05'
 include 'hw06'
 include 'hw07'
 include 'hw08'
+include 'hw09:demo'
+include 'hw09:homework'
+
 
 
 
