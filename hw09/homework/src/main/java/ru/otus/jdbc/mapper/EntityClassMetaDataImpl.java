@@ -34,10 +34,8 @@ public class EntityClassMetaDataImpl <T> implements EntityClassMetaData{
     @Override
     public Field getIdField() {
         for (Field field: clazz.getDeclaredFields()){
-            for (Annotation annotation:field.getAnnotations()){
-                if (annotation.annotationType().equals(Id.class)){
-                    return field;
-                }
+            if (field.isAnnotationPresent(Id.class)) {
+                return field;
             }
         }
         return null;
