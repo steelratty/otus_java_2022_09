@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class EntityClassMetaDataImpl implements EntityClassMetaData{
+public class EntityClassMetaDataImpl <T> implements EntityClassMetaData{
     private final Class<?> clazz;
     public EntityClassMetaDataImpl(Class<?> clazz){
         this.clazz = clazz;
@@ -21,14 +21,14 @@ public class EntityClassMetaDataImpl implements EntityClassMetaData{
     }
 
     @Override
-    public Constructor getConstructor() throws NoSuchMethodException {
+    public Constructor<T> getConstructor() throws NoSuchMethodException {
         List<Field> listField = getAllFields();
         Class[] prmtArr = new Class[listField.size()];
 
         for (int i=0; i<prmtArr.length;i++){
            prmtArr[i] = listField.get(i).getType();
         }
-        return clazz.getConstructor(prmtArr);
+        return (Constructor<T>) clazz.getConstructor(prmtArr);
     }
 
     @Override

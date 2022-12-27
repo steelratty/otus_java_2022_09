@@ -48,16 +48,9 @@ public class DataTemplateJdbc<T> implements DataTemplate<T> {
                     return  clntConsr.newInstance(prmtArr);
                 }
                 return null;
-            } catch (SQLException | NoSuchMethodException e) {
+            } catch (Exception e) {
                 throw new DataTemplateException(e);
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
             }
-            return null;
         });
      //   throw new UnsupportedOperationException();
     }
@@ -82,16 +75,9 @@ public class DataTemplateJdbc<T> implements DataTemplate<T> {
 
                 }
                 return null;
-            } catch (SQLException | NoSuchMethodException e) {
+            } catch (Exception e) {
                 throw new DataTemplateException(e);
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
             }
-            return null;
         });
         return ret;
         //   throw new UnsupportedOperationException();
