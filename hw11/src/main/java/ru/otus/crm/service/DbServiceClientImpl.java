@@ -16,19 +16,23 @@ import java.util.Optional;
 
 public class DbServiceClientImpl implements DBServiceClient {
     private static final Logger log = LoggerFactory.getLogger(DbServiceClientImpl.class);
-    private static final HwCache<Long, Client> cache = new MyCache<>();
+    private static final HwCache<String, Client> cache = new MyCache<>();
     private static final Logger loggerH = LoggerFactory.getLogger(HWCacheDemo.class);
 
     private final DataTemplate<Client> clientDataTemplate;
     private final TransactionManager transactionManager;
 
+    public String get_cash_key(Long lKey){
+        return "KEY:"+ lKey.toString();
+    }
+
     public DbServiceClientImpl(TransactionManager transactionManager, DataTemplate<Client> clientDataTemplate) {
         this.transactionManager = transactionManager;
         this.clientDataTemplate = clientDataTemplate;
-        HwListener<Long, Client> listener = new HwListener<>() {
+        HwListener<String, Client> listener = new HwListener<>() {
             @Override
-            public void notify(Long key, Client value, String action) {
-                loggerH.info("key:{}, value:{}, action: {}", key.toString(), value==null ? "null":value.toString(), action);
+            public void notify(String key, Client value, String action) {
+                loggerH.info("key:{}, value:{}, action: {}", key, value==null ? "null":value.toString(), action);
             }
         };
         cache.addListener(listener);
@@ -42,9 +46,11 @@ public class DbServiceClientImpl implements DBServiceClient {
             if (client.getId() == null) {
                 clientDataTemplate.insert(session, clientCloned);
                 log.info("created client: {}", clientCloned);
+                cache.put(get_cash_key(clientCloned.getId()), clientCloned);
                 return clientCloned;
             }
             clientDataTemplate.update(session, clientCloned);
+            cache.put(get_cash_key(clientCloned.getId()), clientCloned);
             log.info("updated client: {}", clientCloned);
             return clientCloned;
         });
@@ -54,7 +60,7 @@ public class DbServiceClientImpl implements DBServiceClient {
     public Optional<Client> getClient(long id) {
         return transactionManager.doInReadOnlyTransaction(session -> {
             /* получаем из кэша */
-            Client cli = cache.get(id);
+            Client cli = cache.get(get_cash_key(id));
             if (cli != null) {
                 return Optional.of(cli);
             }
@@ -62,7 +68,7 @@ public class DbServiceClientImpl implements DBServiceClient {
             var clientOptional = clientDataTemplate.findById(session, id);
             log.info("client: {}", clientOptional);
             if (clientOptional.isPresent()) {
-                cache.put(clientOptional.get().getId(), clientOptional.get());
+                cache.put(get_cash_key(clientOptional.get().getId()), clientOptional.get());
             }
             return clientOptional;
         });
