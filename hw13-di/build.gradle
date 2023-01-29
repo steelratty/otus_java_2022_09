@@ -15,7 +15,7 @@ dependencies {
 
 }
 
-compileJava.options.encoding = 'UTF-8'
+//compileJava.options.encoding = 'UTF-8'
 
 test {
     useJUnitPlatform()
@@ -23,8 +23,11 @@ test {
         events "passed", "skipped", "failed"
     }
 }
+/*
 tasks.withType(JavaCompile) {
     options.with {
         encoding = 'UTF-8'
     }
 }
+
+ */

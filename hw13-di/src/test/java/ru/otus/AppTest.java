@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 
 class AppTest {
 
-    @DisplayName("Из контекста тремя способами должен корректно доставаться компонент с проставленными полями")
+    @DisplayName("из контекста тремя способами должен корректно доставаться компонент с проставленными полями")
     @ParameterizedTest(name = "Достаем по: {0}")
     @CsvSource(value = {"GameProcessor, ru.otus.services.GameProcessor",
             "GameProcessorImpl, ru.otus.services.GameProcessor",
