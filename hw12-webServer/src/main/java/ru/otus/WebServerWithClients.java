@@ -40,9 +40,7 @@ public class WebServerWithClients {
     public static final String HIBERNATE_CFG_FILE = "hibernate.cfg.xml";
     public static final String SERVER_CFG_FILE = "config.properties";
 
-
-    public static void main(String[] args) throws Exception {
-        // все, что относится к бд
+    private static DbServiceClientImpl dbInit() {
         var configuration = new Configuration().configure(HIBERNATE_CFG_FILE);
         var dbUrl = configuration.getProperty("hibernate.connection.url");
         var dbUserName = configuration.getProperty("hibernate.connection.username");
@@ -51,7 +49,12 @@ public class WebServerWithClients {
         var sessionFactory = HibernateUtils.buildSessionFactory(configuration, Client.class, Address.class, Phone.class);
         var transactionManager = new TransactionManagerHibernate(sessionFactory);
         var clientTemplate = new DataTemplateHibernate<>(Client.class);
-        var dbServiceClient = new DbServiceClientImpl(transactionManager, clientTemplate);
+        return new DbServiceClientImpl(transactionManager, clientTemplate);
+    }
+    public static void main(String[] args) throws Exception {
+        // все, что относится к бд
+
+        var dbServiceClient = dbInit();
 
         Gson gson = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
         TemplateProcessor templateProcessor = new TemplateProcessorImpl(TEMPLATES_DIR);

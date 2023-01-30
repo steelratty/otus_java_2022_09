@@ -52,7 +52,7 @@ public class ClientsUsersWebServer implements UsersWebServer {
         server.stop();
     }
 
-    private Server initContext() {
+    private void initContext() {
 
         ResourceHandler resourceHandler = createResourceHandler();
         ServletContextHandler servletContextHandler = createServletContextHandler();
@@ -63,7 +63,6 @@ public class ClientsUsersWebServer implements UsersWebServer {
 
 
         server.setHandler(handlers);
-        return server;
     }
 
     protected Handler applySecurity(ServletContextHandler servletContextHandler, String ...paths) {
