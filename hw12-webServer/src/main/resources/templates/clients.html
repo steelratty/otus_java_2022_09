@@ -1,0 +1,87 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Клиенты</title>
+    <style type="text/css">
+       .client td {
+          border: 1px solid black;
+          border-collapse: collapse;
+          padding: 10px;
+       }
+       .client th {
+          border: 1px solid black;
+          border-collapse: collapse;
+          padding: 10px;
+       }
+       .client {
+          border: 1px solid black;
+          border-collapse: collapse;
+          padding: 10px;
+       }
+  </style>
+    <script>
+        function createClient() {
+            const clientIdNameTextBox = document.getElementById('clientIdName');
+            const clientName = clientIdNameTextBox.value;
+
+            const addressIdStreetTextBox = document.getElementById('addressIdStreet');
+            const street = addressIdStreetTextBox.value;
+
+            const phonesIdPhoneListTextBox = document.getElementById('phonesIdPhoneList');
+            const phones = phonesIdPhoneListTextBox.value;
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "api/client", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({
+              clientName: clientName,
+              street: street,
+              phones: phones.split(",")
+            }));
+        }
+    </script>
+</head>
+
+<body>
+
+<h4>Создать клиента</h4>
+<div>
+    <div>
+          Имя клиента
+         <input type="text" id = "clientIdName" value="Galich Vasiliy Gennadievich" placeholder="Введите имя клиента">
+    </div>
+    <div>
+         Адрес клиента<
+         <input type="text" id = "addressIdStreet" value="Versal" placeholder="Введите адрес клиента">
+    </div>
+    <div>
+         Список тел номеров
+         <input type="text" id = "phonesIdPhoneList" value="333-33,234-234,555-555" placeholder="Введите номера телефонов через запятую">
+    </div>
+</div>
+
+<button onclick="createClient()">Создать</button>
+
+<h4> Список клиентов </h4>
+<table class="client">
+    <thead>
+    <tr>
+        <th>Client</th>
+        <th>Address</th>
+        <th>Phones</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <#list allClients as allClient>
+    <tr>
+        <td style="border-style: solid">${allClient.getName()}</td>
+        <td>${allClient.getAddress().getStreet()}</td>
+        <td> <#list allClient.getPhones() as phone> ${phone.getNumber()}<br/> </#list> </td>
+    </tr>
+    </#list>
+    </tbody>
+</table>
+
+
+</body>
+</html>
