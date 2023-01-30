@@ -5,8 +5,6 @@ import org.slf4j.LoggerFactory;
 
 public class NumToNum {
     private static final Logger logger = LoggerFactory.getLogger(NumToNum.class);
-    private final int maxCurr = 10;
-    private final int minCurr = 1;
 
     private int currCount = 0;
     private int currTh = 2;
@@ -14,6 +12,9 @@ public class NumToNum {
 
 
     private synchronized void action(int threadNum) {
+        final int maxCurr = 10;
+        final int minCurr = 1;
+
         while(!Thread.currentThread().isInterrupted()) {
             try {
                 while (currTh==threadNum) {
