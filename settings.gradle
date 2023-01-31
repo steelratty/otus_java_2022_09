@@ -11,6 +11,7 @@ include 'hw09:demo'
 include 'hw09:homework'
 include 'hw10'
 include 'hw11'
+include 'hw13-di'
 include 'hw15-thread'
 include 'hw12-webServer'
 
