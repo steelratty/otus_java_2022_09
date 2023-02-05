@@ -2,34 +2,26 @@ plugins {
     id 'java'
 }
 
-sourceCompatibility = JavaVersion.VERSION_13
-targetCompatibility = JavaVersion.VERSION_13
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    implementation("org.springframework.boot:spring-boot-starter-test")
+
     implementation 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+	implementation 'ch.qos.logback:logback-classic'
 
-    implementation("ch.qos.logback:logback-classic")
-    implementation("org.hibernate:hibernate-core")
-    implementation('org.flywaydb:flyway-core')
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.postgresql:postgresql'
+  //  implementation 'com.google.code.findbugs:jsr305'
 
-    implementation("org.postgresql:postgresql")
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 
-    implementation("com.google.code.gson:gson:${Versions.gson}")
 
-    implementation("org.eclipse.jetty:jetty-servlet:${Versions.jetty}")
-    implementation("org.eclipse.jetty:jetty-server:${Versions.jetty}")
-    implementation("org.eclipse.jetty:jetty-webapp:${Versions.jetty}")
-    implementation("org.eclipse.jetty:jetty-security:${Versions.jetty}")
-    implementation("org.eclipse.jetty:jetty-http:${Versions.jetty}")
-    implementation("org.eclipse.jetty:jetty-io:${Versions.jetty}")
-    implementation("org.eclipse.jetty:jetty-util:${Versions.jetty}")
-    implementation("org.freemarker:freemarker:${Versions.freemarker}")
-
-    testImplementation("org.junit.jupiter:junit-jupiter-engine")
-    testImplementation("org.junit.jupiter:junit-jupiter-params")
-    testImplementation("org.assertj:assertj-core")
-    testImplementation("org.mockito:mockito-junit-jupiter")
+    implementation("com.google.code.gson:gson")
 }
 
 test {
@@ -39,7 +31,7 @@ test {
     }
 }
 
-
+/*
 compileJava.options.encoding = 'UTF-8'
 
 tasks.withType(JavaCompile) {
@@ -47,3 +39,5 @@ tasks.withType(JavaCompile) {
         encoding = 'UTF-8'
     }
 }
+
+ */

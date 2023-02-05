@@ -3,21 +3,25 @@ package ru.otus.crm.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceCreator;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
-import javax.persistence.*;
-import javax.persistence.Entity;
 
-@Entity
-@Table(name = "phone")
+@Table("phone")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public
 class Phone {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NonNull
     private Long id;
-
-    @Column(name = "number")
     private String number;
+    @PersistenceCreator
+    public Phone(Long id, String number){
+        this.id = id;
+        this.number = number;
+    }
 }

@@ -1,36 +1,30 @@
 package ru.otus.crm.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import javax.persistence.*;
 import java.util.List;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceCreator;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.MappedCollection;
+import org.springframework.data.relational.core.mapping.Table;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Entity
-@Table(name = "client")
+@Table("client")
 public class Client implements Cloneable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id")
+    @NonNull
     private Long id;
-
-    @Column(name = "name")
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true, targetEntity = Address.class)
-    @JoinColumn(name = "address_id", foreignKey = @ForeignKey(name = "FK_CLIENT_ADDRESS"), referencedColumnName = "id")
+    @Column("address_id")
     private Address address;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "client_id", nullable = false, updatable = false, foreignKey = @ForeignKey(name = "FK_PHONE_CLIENT"))
+    @MappedCollection(idColumn = "client_id", keyColumn= "client_id")
     private List<Phone> phones;
 
     public Client(String name) {
@@ -43,6 +37,13 @@ public class Client implements Cloneable {
         this.name = name;
     }
 
+    @PersistenceCreator
+    public Client(Long id, String name, Address address, List<Phone> phones) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.phones = phones;
+    }
     @Override
     public Client clone() {
         return new Client(this.id, this.name, this.address, this.phones);
