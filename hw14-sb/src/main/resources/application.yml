@@ -7,7 +7,7 @@ app:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5430/demodb
+    url: jdbc:postgresql://localhost:5430/demodb2
     username: usr
     password: pwd
   flyway:
