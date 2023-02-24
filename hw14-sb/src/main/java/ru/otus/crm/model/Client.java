@@ -21,11 +21,18 @@ public class Client implements Cloneable {
     private Long id;
     private String name;
 
-    @Column("address_id")
+    @Column("id")
     private Address address;
 
     @MappedCollection(idColumn = "client_id", keyColumn= "client_id")
     private List<Phone> phones;
+
+    public Long getAddressId() {
+        if (address != null) {
+            return address.getId();
+        }
+        return null;
+    };
 
     public Client(String name) {
         this.id = null;

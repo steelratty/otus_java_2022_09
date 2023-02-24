@@ -25,6 +25,7 @@ public class ClientRestController {
 
     @PostMapping("/api/client")
     public Client saveClient(@RequestBody Client client) {
+
         return clientService.save(client);
     }
 

@@ -1,7 +1,9 @@
 package ru.otus.service;
 
 import org.springframework.stereotype.Service;
+import ru.otus.crm.model.Address;
 import ru.otus.crm.model.Client;
+import ru.otus.repostory.AddressRepository;
 import ru.otus.repostory.ClientRepository;
 
 import java.util.List;
@@ -11,19 +13,32 @@ import java.util.Random;
 public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
+    private final AddressRepository addressRepository;
 
-    public ClientServiceImpl(ClientRepository clientRepository) {
+    public ClientServiceImpl(ClientRepository clientRepository, AddressRepository addressRepository) {
         this.clientRepository = clientRepository;
+        this.addressRepository = addressRepository;
     }
 
     @Override
     public List<Client> findAll() {
-        return clientRepository.findAll();
+        List<Client> tmpList = clientRepository.findAll();
+        for (Client cli:tmpList){
+          if (cli.getAddressId() !=null){
+              cli.setAddress(addressRepository.findById(cli.getAddressId()).get());
+          }
+        }
+        return tmpList;
     }
 
     @Override
     public Client findById(long id) {
-        return clientRepository.findById(id).get();
+        Client tmpClient;
+        tmpClient = clientRepository.findById(id).get();
+        if (tmpClient.getAddressId() !=null){
+            tmpClient.setAddress(addressRepository.findById(tmpClient.getAddressId()).get());
+        }
+        return tmpClient;
     }
 
     @Override
@@ -40,6 +55,11 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client save(Client client) {
+        Address address = client.getAddress();
+        if (address == null){
+            address = new Address(null, "default_address");
+            client.setAddress(address);
+        }
         return clientRepository.save(client);
     }
 }
