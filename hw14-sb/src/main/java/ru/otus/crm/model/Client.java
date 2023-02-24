@@ -21,27 +21,30 @@ public class Client implements Cloneable {
     private Long id;
     private String name;
 
-    @Column("id")
+    private String addressId;
+    @MappedCollection(idColumn = "id")
     private Address address;
 
     @MappedCollection(idColumn = "client_id", keyColumn= "client_id")
     private List<Phone> phones;
 
-    public Long getAddressId() {
+    public String getOAddressId() {
         if (address != null) {
             return address.getId();
         }
         return null;
     };
 
-    public Client(String name) {
-        this.id = null;
-        this.name = name;
-    }
-
     public Client(Long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+        if (address != null) {
+            this.addressId = getOAddressId();
+        }
     }
 
     @PersistenceCreator
@@ -50,6 +53,9 @@ public class Client implements Cloneable {
         this.name = name;
         this.address = address;
         this.phones = phones;
+        if (address != null) {
+            this.addressId = getOAddressId();
+        }
     }
     @Override
     public Client clone() {

@@ -17,7 +17,7 @@ public class ClientServiceImpl implements ClientService {
 
     public ClientServiceImpl(ClientRepository clientRepository, AddressRepository addressRepository) {
         this.clientRepository = clientRepository;
-        this.addressRepository = addressRepository;
+       this.addressRepository = addressRepository;
     }
 
     @Override
@@ -25,8 +25,8 @@ public class ClientServiceImpl implements ClientService {
         List<Client> tmpList = clientRepository.findAll();
         for (Client cli:tmpList){
           if (cli.getAddressId() !=null){
-              cli.setAddress(addressRepository.findById(cli.getAddressId()).get());
-          }
+              cli.setAddress(addressRepository.findById(cli.getOAddressId()).get());
+         }
         }
         return tmpList;
     }
@@ -36,7 +36,7 @@ public class ClientServiceImpl implements ClientService {
         Client tmpClient;
         tmpClient = clientRepository.findById(id).get();
         if (tmpClient.getAddressId() !=null){
-            tmpClient.setAddress(addressRepository.findById(tmpClient.getAddressId()).get());
+            tmpClient.setAddress(addressRepository.findById(tmpClient.getOAddressId()).get());
         }
         return tmpClient;
     }

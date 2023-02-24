@@ -16,7 +16,7 @@ public interface AddressRepository extends CrudRepository<Address, Long> {
     Address save(Address address);
 
     @Query("select * from address where id = :id")
-    Optional<Address> findById(@Param("id") long id);
+    Optional<Address> findById(@Param("id") String id);
 
     @Query("select * from address where upper(street) = upper(:street)")
     Address findByName(@Param("street") String street);

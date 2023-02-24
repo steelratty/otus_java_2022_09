@@ -9,6 +9,8 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.util.UUID;
+
 
 @Data
 @NoArgsConstructor
@@ -17,13 +19,12 @@ public
 class Address {
     @Id
     @NonNull
-    @MappedCollection(idColumn = "address_id", keyColumn= "id")
-    private Long id;
+    private String id;
     private String street;
 
     @PersistenceCreator
-    public Address (Long id, String street){
-        this.id = id;
+    public Address (String id, String street){
+        this.id = (id==null) ? UUID.randomUUID().toString():id;
         this.street = street;
     }
 
