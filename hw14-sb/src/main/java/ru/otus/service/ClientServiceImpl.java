@@ -55,11 +55,6 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client save(Client client) {
-        Address address = client.getAddress();
-        if (address == null){
-            address = new Address(null, "default_address");
-            client.setAddress(address);
-        }
         return clientRepository.save(client);
     }
 }

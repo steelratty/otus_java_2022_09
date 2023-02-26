@@ -25,7 +25,7 @@ public class Client implements Cloneable {
     @MappedCollection(idColumn = "id")
     private Address address;
 
-    @MappedCollection(idColumn = "client_id", keyColumn= "client_id")
+    @MappedCollection(idColumn = "client_id", keyColumn= "id")
     private List<Phone> phones;
 
     public String getOAddressId() {
@@ -33,7 +33,7 @@ public class Client implements Cloneable {
             return address.getId();
         }
         return null;
-    };
+    }
 
     public Client(Long id, String name) {
         this.id = id;

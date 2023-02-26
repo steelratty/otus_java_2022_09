@@ -1,12 +1,15 @@
 package ru.otus.crm.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceCreator;
-
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
+
+import java.util.UUID;
 
 
 @Table("phone")
@@ -16,11 +19,11 @@ public
 class Phone {
     @Id
     @NonNull
-    private Long id;
+    private String id;
     private String number;
     @PersistenceCreator
-    public Phone(Long id, String number){
-        this.id = id;
+    public Phone(String id, String number){
+        this.id = (id==null) ? UUID.randomUUID().toString():id;
         this.number = number;
     }
 }

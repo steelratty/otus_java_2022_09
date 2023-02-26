@@ -27,13 +27,20 @@
             const clientDataContainer = document.getElementById('clientDataContainer');
             const clientNameInput = document.getElementById("clientName");
             const clientName = clientNameInput.value;
+
+            const clientStreetInput = document.getElementById("clientStreet");
+            const clientStreet = clientStreetInput.value;
+
+            const clientPhonesInput = document.getElementById("clientPhones");
+            const clientPhones = clientPhonesInput.value;
+
             fetch('/api/client', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({name: clientName})
+                body: JSON.stringify({name: clientName, street: clientStreet, phones: phones.split(",")})
              })
                 .then(response => response.json())
                 .then(client => clientDataContainer.innerHTML = 'Клиент создан: ' + JSON.stringify(client));
@@ -47,7 +54,17 @@
 
     <div class="row">
         <label for="clientName">Name:</label>
-        <input id="clientName" name="name" type="text" th:value="*{name}" value="John Doe"/>
+        <input id="clientName" name="name" type="text" th:value="*{name}" />
+    </div>
+
+    <div class="row">
+        <label for="clientStreet">Street:</label>
+        <input id="clientStreet" name="street" type="text" th:value="*{street}"/>
+    </div>
+
+    <div class="row">
+        <label for="clientPhones">Phones separated "," :</label>
+        <input id="clientPhones" name="phones" type="text" th:value="*{phones}"/>
     </div>
 
     <div class="row">

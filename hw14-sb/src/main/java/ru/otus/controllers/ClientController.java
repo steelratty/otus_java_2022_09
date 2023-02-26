@@ -7,9 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.view.RedirectView;
+import ru.otus.crm.model.Address;
 import ru.otus.crm.model.Client;
+import ru.otus.crm.model.Phone;
+import ru.otus.crm.webmodel.WebClient;
 import ru.otus.service.ClientService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -41,12 +45,20 @@ public class ClientController {
 
     @GetMapping("/client/create")
     public String clientCreateView(Model model) {
-        model.addAttribute("client", new Client());
+        var webClient  = new WebClient(null,null, null);
+        model.addAttribute("client", webClient);
         return "clientCreate";
     }
 
     @PostMapping("/client/save")
-    public RedirectView clientSave(@ModelAttribute Client client) {
+    public RedirectView clientSave(@ModelAttribute WebClient webClient) {
+        List<Phone> phones= new ArrayList<>();
+        if ( webClient.phones() != null ) {
+            for (String strPhone : webClient.phones()) {
+                phones.add(new Phone(null, strPhone));
+            }
+        }
+        Client client = new Client(null, webClient.name(), new Address(null, webClient.street()), phones);
         clientService.save(client);
         return new RedirectView("/", true);
     }
