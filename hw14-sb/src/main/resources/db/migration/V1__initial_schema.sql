@@ -4,19 +4,18 @@ create table phone (id varchar(36), number varchar(255), client_id bigint not nu
 alter table phone add constraint FK_PHONE_CLIENT foreign key (client_id) references client (id);
 
 
---insert into address (id, street) values (1,'volodarskogo');
---insert into address (id, street) values (2,'dzerzinskogo');
---insert into address (id, street) values (3,'popova');
---insert into address (id, street) values (4,'levitana');
+insert into address (id, street) values (1, 'Volodarskogo');
+insert into address (id, street) values (2, 'Dzerzinskogo');
+insert into address (id, street) values (3, 'Popova');
+insert into address (id, street) values (4, 'Levitana');
 
---insert into client (name,address_id ) values ('Jonny A Good', 1);
---insert into client (name,address_id ) values ('Jonny B Good', 2);
---insert into client (name,address_id ) values ('Jonny C Good', 4);
+insert into client (name,address_id ) values ('Johnny A Good', 1);
+insert into client (name,address_id ) values ('Johnny B Good', 2);
+insert into client (name,address_id ) values ('Johnny C Good', 4);
 
---
---insert into phone (number, client_id) values ('666-55-55', 1);
---insert into phone (number, client_id) values ('333-55-55', 1);
---insert into phone (number, client_id) values ('111-55-55', 2);
---insert into phone (number, client_id) values ('222-22-22', 2);
---insert into phone (number, client_id) values ('111-11-11', 3);
+insert into phone (id, number, client_id) values (1, '666-55-55', 1);
+insert into phone (id, number, client_id) values (2, '333-55-55', 1);
+insert into phone (id, number, client_id) values (3, '111-55-55', 2);
+insert into phone (id, number, client_id) values (4, '222-22-22', 2);
+insert into phone (id, number, client_id) values (5, '111-11-11', 3);
 

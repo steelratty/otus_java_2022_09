@@ -45,7 +45,7 @@ public class ClientController {
 
     @GetMapping("/client/create")
     public String clientCreateView(Model model) {
-        var webClient  = new WebClient(null,null, null);
+        var webClient  = new WebClient("DefaultClient","DefaultStreet", null);
         model.addAttribute("client", webClient);
         return "clientCreate";
     }

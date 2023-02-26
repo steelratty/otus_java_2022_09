@@ -40,7 +40,7 @@
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({name: clientName, street: clientStreet, phones: phones.split(",")})
+                body: JSON.stringify({name: clientName, street: clientStreet, phones: clientPhones.split(",")})
              })
                 .then(response => response.json())
                 .then(client => clientDataContainer.innerHTML = 'Клиент создан: ' + JSON.stringify(client));
