@@ -41,9 +41,4 @@ public class ClientRestController {
         return clientService.save(client);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/client/random")
-    public Client findRandomClient() {
-        return clientService.findRandom();
-    }
-
 }

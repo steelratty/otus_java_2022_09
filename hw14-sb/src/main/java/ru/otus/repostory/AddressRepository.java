@@ -9,7 +9,7 @@ import ru.otus.crm.model.Address;
 import java.util.List;
 import java.util.Optional;
 
-public interface AddressRepository extends CrudRepository<Address, Long> {
+public interface AddressRepository extends CrudRepository<Address, String> {
     @Query("select * from address")
     List<Address> findAll();
 
