@@ -28,22 +28,22 @@ public class SensorDataProcessorBuffered implements SensorDataProcessor {
 
     @Override
     public void process(SensorData data) {
-              if (queue.size() >= bufferSize) {
-                  flush();
-              }
-            queue.put(data);
+        if (queue.size() >= bufferSize) {
+            flush();
+        }
+        queue.put(data);
     }
 
     public  synchronized  void flush() {
-            if (queue.size()==0) return;
+        if (queue.isEmpty()) return;
             List<SensorData> listBuff = new ArrayList<>();
                 try {
-                        for (long i = 0; i < bufferSize; i++) {
-                            SensorData data = queue.poll();
-                            if (data == null) break;
-                            listBuff.add(data);
-                        }
-                       writer.writeBufferedData(listBuff);
+                    for (long i = 0; i < bufferSize; i++) {
+                           SensorData data = queue.poll();
+                           if (data == null) break;
+                           listBuff.add(data);
+                    }
+                    writer.writeBufferedData(listBuff);
                 } catch (Exception e) {
                     log.error("Ошибка в процессе записи буфера", e);
                 }
