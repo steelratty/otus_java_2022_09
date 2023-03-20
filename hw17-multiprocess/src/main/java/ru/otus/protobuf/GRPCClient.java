@@ -22,7 +22,7 @@ public class GRPCClient {
                 .usePlaintext()
                 .build();
 
-        var stub = RemoteDBServiceGrpc.newBlockingStub(channel);
+        var stub = RemoteServiceGrpc.newBlockingStub(channel);
         var getValueMsgIterator =
                 stub.getValues(
                 UFirstNextValues.newBuilder().setFirstValue(1).setLastValue(30).build());

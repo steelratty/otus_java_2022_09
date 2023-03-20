@@ -3,7 +3,7 @@ package ru.otus.protobuf.service;
 import io.grpc.stub.StreamObserver;
 import ru.otus.protobuf.generated.*;
 
-public class RemoteServiceGetValues extends RemoteDBServiceGrpc.RemoteDBServiceImplBase {
+public class RemoteServiceGetValues extends RemoteServiceGrpc.RemoteServiceImplBase {
 
     @Override
     public void getValues(UFirstNextValues request, StreamObserver<UNextValue> responseObserver)  {
