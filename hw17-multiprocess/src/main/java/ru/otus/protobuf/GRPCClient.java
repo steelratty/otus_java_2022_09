@@ -28,12 +28,10 @@ public class GRPCClient {
                 UFirstNextValues.newBuilder().setFirstValue(1).setLastValue(30).build());
         logger.info("numbers Client is starting...");
         AtomicLong currServVal = new AtomicLong();
-        AtomicBoolean isNew = new AtomicBoolean(); // null;
         Thread th1 = new Thread(() -> {
             getValueMsgIterator.forEachRemaining(um ->
                     {
                             currServVal.set(um.getValue());
-                            isNew.set(true);
                             logger.info(String.format("new_value: %d", currServVal.longValue()));
                     }
             );
@@ -44,8 +42,7 @@ public class GRPCClient {
         long currentValue = 0;
         while (!th1.isInterrupted() ){
             Thread.sleep(1000);
-                currentValue = currentValue + (isNew.get()?currServVal.longValue():0 )+ 1;
-                isNew.set(false);
+                currentValue = currentValue + currServVal.getAndSet(0)+ 1;
                 logger.info(String.format("current_value: %d", currentValue));
         }
 
