@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package ru.otus.protobuf.generated;
+
+option java_multiple_files = true;
+
+message UFirstNextValues {
+    int64 firstValue = 1;
+    int64 lastValue  = 2;
+}
+
+message UNextValue {
+    int64 value = 1;
+}
+
+message Empty {}
+
+service RemoteService {
+    rpc getValues( UFirstNextValues ) returns ( stream UNextValue );
+}
