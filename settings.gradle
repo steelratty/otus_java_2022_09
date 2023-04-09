@@ -13,6 +13,10 @@ include 'hw10'
 include 'hw11'
 include 'hw15-thread'
 include 'hw12-webServer'
+include 'hw16-concurrentCollections'
+include 'hw17-multiprocess'
+include 'hw18_wf:client-service'
+include 'hw18_wf:datastore-service'
 
 
 
